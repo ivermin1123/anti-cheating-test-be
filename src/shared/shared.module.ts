@@ -24,9 +24,9 @@ const providers = [
             useFactory: (configService: ConfigService) => ({
                 secretOrPrivateKey: configService.get('JWT_SECRET_KEY'),
                 // if you want to use token with expiration date
-                // signOptions: {
-                //     expiresIn: configService.getNumber('JWT_EXPIRATION_TIME'),
-                // },
+                signOptions: {
+                    expiresIn: configService.getNumber('JWT_EXPIRATION_TIME'),
+                },
             }),
             inject: [ConfigService],
         }),

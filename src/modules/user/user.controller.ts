@@ -13,8 +13,8 @@ import { PageDto } from '../../common/dto/PageDto';
 import { AuthUser } from '../../decorators/auth-user.decorator';
 import { Auth, UUIDParam } from '../../decorators/http.decorators';
 import { TranslationService } from '../../shared/services/translation.service';
-import { UserDto } from './dto/UserDto';
-import { UsersPageOptionsDto } from './dto/UsersPageOptionsDto';
+import { UserDto } from './res/UserDto';
+import { UsersPageOptionsDto } from './res/UsersPageOptionsDto';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
@@ -27,7 +27,7 @@ export class UserController {
     ) {}
 
     @Get('admin')
-    @Auth(RoleType.USER)
+    @Auth(RoleType.ADMIN)
     @HttpCode(HttpStatus.OK)
     async admin(@AuthUser() user: UserEntity): Promise<string> {
         const translation = await this.translationService.translate(
@@ -40,7 +40,7 @@ export class UserController {
     }
 
     @Get()
-    @Auth(RoleType.USER)
+    @Auth(RoleType.ADMIN)
     @HttpCode(HttpStatus.OK)
     @ApiResponse({
         status: HttpStatus.OK,
@@ -55,7 +55,7 @@ export class UserController {
     }
 
     @Get(':id')
-    @Auth(RoleType.USER)
+    @Auth(RoleType.ADMIN)
     @HttpCode(HttpStatus.OK)
     @ApiResponse({
         status: HttpStatus.OK,

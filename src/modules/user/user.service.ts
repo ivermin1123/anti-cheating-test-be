@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { compareAsc } from 'date-fns';
 import { FindConditions } from 'typeorm';
 
 import { PageDto } from '../../common/dto/PageDto';
@@ -6,9 +7,10 @@ import { FileNotImageException } from '../../exceptions/file-not-image.exception
 import { IFile } from '../../interfaces/IFile';
 import { AwsS3Service } from '../../shared/services/aws-s3.service';
 import { ValidatorService } from '../../shared/services/validator.service';
-import { UserRegisterDto } from '../auth/dto/UserRegisterDto';
-import { UserDto } from './dto/UserDto';
-import { UsersPageOptionsDto } from './dto/UsersPageOptionsDto';
+import { UserRegisterDto } from '../auth/req/UserRegisterDto';
+import { StudentRegisterDto } from './req/StudentRegisterDto';
+import { UserDto } from './res/UserDto';
+import { UsersPageOptionsDto } from './res/UsersPageOptionsDto';
 import { UserEntity } from './user.entity';
 import { UserRepository } from './user.repository';
 
@@ -62,6 +64,34 @@ export class UserService {
         return this.userRepository.save(user);
     }
 
+    async addStudent(
+        studentRegisterDto: StudentRegisterDto,
+        file: IFile,
+    ): Promise<UserEntity> {
+        const isValidYear = compareAsc(
+            new Date(studentRegisterDto.yearOfAdmission),
+            new Date(),
+        );
+
+        if (isValidYear === -1) {
+            throw new BadRequestException(
+                `Invalid. yearOfAdmission must be greater than or equal ${Date.now()}`,
+            );
+        }
+
+        const user = this.userRepository.create(studentRegisterDto);
+
+        if (file && !this.validatorService.isImage(file.mimetype)) {
+            throw new FileNotImageException();
+        }
+
+        if (file) {
+            user.avatar = await this.awsS3Service.uploadImage(file);
+        }
+
+        return this.userRepository.save(user);
+    }
+
     async getUsers(
         pageOptionsDto: UsersPageOptionsDto,
     ): Promise<PageDto<UserDto>> {
@@ -73,7 +103,7 @@ export class UserService {
         return items.toPageDto(pageMetaDto);
     }
 
-    async getUser(userId: string) {
+    async getUser(userId: string): Promise<UserDto> {
         const queryBuilder = this.userRepository.createQueryBuilder('user');
 
         queryBuilder.where('user.id = :userId', { userId });

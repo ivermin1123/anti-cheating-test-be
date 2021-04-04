@@ -1,25 +1,40 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
-import { UserEntity } from '../modules/user/user.entity';
+import { RoleType } from '../common/constants/role-type';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-    constructor(private readonly _reflector: Reflector) {}
+    constructor(private reflector: Reflector) {}
 
-    canActivate(context: ExecutionContext): boolean {
-        const roles = this._reflector.get<string[]>(
-            'roles',
+    // eslint-disable-next-line @typescript-eslint/require-await
+    async canActivate(context: ExecutionContext): Promise<boolean> {
+        const roles =
+            this.reflector.getAllAndMerge<RoleType[]>('roles', [
+                context.getClass(),
+                context.getHandler(),
+            ]) || [];
+
+        const isPublic = this.reflector.getAllAndOverride<boolean>('public', [
             context.getHandler(),
-        );
+            context.getClass(),
+        ]);
 
-        if (!roles) {
+        if (!roles || isPublic) {
             return true;
         }
 
-        const request = context.switchToHttp().getRequest();
-        const user = <UserEntity>request.user;
+        let isAllowed = false;
 
-        return roles.includes(user.role);
+        roles.forEach((role) => {
+            if (
+                (context.switchToHttp().getRequest().request.user.roles &&
+                    role) === role
+            ) {
+                isAllowed = true;
+            }
+        });
+
+        return isAllowed;
     }
 }

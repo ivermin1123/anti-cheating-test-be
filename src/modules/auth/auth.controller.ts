@@ -22,13 +22,13 @@ import { ApiFile } from '../../decorators/swagger.schema';
 import { AuthGuard } from '../../guards/auth.guard';
 import { AuthUserInterceptor } from '../../interceptors/auth-user-interceptor.service';
 import { IFile } from '../../interfaces/IFile';
-import { UserDto } from '../user/dto/UserDto';
+import { UserDto } from '../user/res/UserDto';
 import { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
-import { LoginPayloadDto } from './dto/LoginPayloadDto';
-import { UserLoginDto } from './dto/UserLoginDto';
-import { UserRegisterDto } from './dto/UserRegisterDto';
+import { UserLoginDto } from './req/UserLoginDto';
+import { UserRegisterDto } from './req/UserRegisterDto';
+import { LoginPayloadDto } from './res/LoginPayloadDto';
 
 @Controller('auth')
 @ApiTags('auth')

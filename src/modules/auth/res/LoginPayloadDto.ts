@@ -2,7 +2,7 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 
-import { UserDto } from '../../user/dto/UserDto';
+import { UserDto } from '../../user/res/UserDto';
 import { TokenPayloadDto } from './TokenPayloadDto';
 
 export class LoginPayloadDto {

@@ -4,11 +4,11 @@ import { JwtService } from '@nestjs/jwt';
 import { UserNotFoundException } from '../../exceptions/user-not-found.exception';
 import { UtilsService } from '../../providers/utils.service';
 import { ConfigService } from '../../shared/services/config.service';
-import { UserDto } from '../user/dto/UserDto';
+import { UserDto } from '../user/res/UserDto';
 import { UserEntity } from '../user/user.entity';
 import { UserService } from '../user/user.service';
-import { TokenPayloadDto } from './dto/TokenPayloadDto';
-import { UserLoginDto } from './dto/UserLoginDto';
+import { UserLoginDto } from './req/UserLoginDto';
+import { TokenPayloadDto } from './res/TokenPayloadDto';
 
 @Injectable()
 export class AuthService {
