@@ -6,6 +6,7 @@ import { ConfigService } from './services/config.service';
 import { GeneratorService } from './services/generator.service';
 import { TranslationService } from './services/translation.service';
 import { ValidatorService } from './services/validator.service';
+import { VerificationApiService } from './services/verification-api.service';
 
 const providers = [
     ConfigService,
@@ -13,6 +14,7 @@ const providers = [
     AwsS3Service,
     GeneratorService,
     TranslationService,
+    VerificationApiService,
 ];
 
 @Global()

@@ -7,8 +7,8 @@ import { FieldOfStudyService } from './field-of-study.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([FieldOfStudyRepository])],
-    controllers: [FieldOfStudyController, FieldOfStudyController],
+    controllers: [FieldOfStudyController],
     exports: [FieldOfStudyService],
-    providers: [FieldOfStudyService, FieldOfStudyService],
+    providers: [FieldOfStudyService],
 })
 export class FieldOfStudyModule {}

@@ -7,8 +7,8 @@ import { ClassroomService } from './classroom.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([ClassroomRepository])],
-    controllers: [ClassroomController, ClassroomController],
+    controllers: [ClassroomController],
     exports: [ClassroomService],
-    providers: [ClassroomService, ClassroomService],
+    providers: [ClassroomService],
 })
 export class ClassroomModule {}

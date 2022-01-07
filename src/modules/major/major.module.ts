@@ -7,8 +7,8 @@ import { MajorService } from './major.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([MajorRepository])],
-    controllers: [MajorController, MajorController],
+    controllers: [MajorController],
     exports: [MajorService],
-    providers: [MajorService, MajorService],
+    providers: [MajorService],
 })
 export class MajorModule {}

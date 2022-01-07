@@ -7,8 +7,8 @@ import { StudentAnswerService } from './student-answer.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([StudentAnswerRepository])],
-    controllers: [StudentAnswerController, StudentAnswerController],
+    controllers: [StudentAnswerController],
     exports: [StudentAnswerService],
-    providers: [StudentAnswerService, StudentAnswerService],
+    providers: [StudentAnswerService],
 })
 export class StudentAnswerModule {}
